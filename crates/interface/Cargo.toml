@@ -10,5 +10,12 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-alloy = { workspace = true, default-features = false, features = ["serde", "consensus"] }
-serde = { workspace = true, default-features = false, features = ["derive", "alloc"] }
+alloy = { workspace = true, default-features = false, features = ["serde"] }
+serde = { version = "1.0.219", default-features = false, optional = true }
+
+[features]
+forward = [
+    "dep:serde",
+    "alloy/consensus"
+]
+default = ["forward"]

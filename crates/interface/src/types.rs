@@ -1,11 +1,12 @@
 use crate::error::InvalidTransaction;
-use alloy::consensus::{Header, Sealed};
 use alloy::primitives::{Address, B256, U256};
-use serde::{Deserialize, Serialize};
+#[cfg(feature = "forward")]
+use alloy::consensus::{Header, Sealed};
 
 pub use alloy::primitives::Log;
 
-#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[cfg_attr(feature = "forward", derive(serde::Serialize, serde::Deserialize))]
 pub struct BlockContext {
     // Chain id is temporarily also added here (so that it can be easily passed from the oracle)
     // long term, we have to decide whether we want to keep it here, or add a separate oracle
@@ -41,6 +42,7 @@ impl Default for BlockHashes {
     }
 }
 
+#[cfg(feature = "forward")]
 impl serde::Serialize for BlockHashes {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -50,6 +52,7 @@ impl serde::Serialize for BlockHashes {
     }
 }
 
+#[cfg(feature = "forward")]
 impl<'de> serde::Deserialize<'de> for BlockHashes {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
@@ -77,7 +80,10 @@ pub struct TxProcessingOutputOwned {
 
 #[derive(Debug, Clone)]
 pub struct BlockOutput {
+    #[cfg(feature = "forward")]
     pub header: Sealed<Header>,
+    #[cfg(not(feature = "forward"))]
+    pub header: (),
     pub tx_results: Vec<Result<TxOutput, InvalidTransaction>>,
     // TODO: will be returned per tx later
     pub storage_writes: Vec<StorageWrite>,
@@ -108,7 +114,8 @@ pub struct AccountDiff {
 }
 
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "forward", derive(serde::Serialize, serde::Deserialize))]
 pub enum PreimageType {
     Bytecode = 0,
     AccountData = 1,
