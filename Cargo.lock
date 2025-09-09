@@ -1261,5 +1261,13 @@ name = "zksync_os_interface"
 version = "0.0.1"
 dependencies = [
  "alloy",
+ "zksync_os_types",
+]
+
+[[package]]
+name = "zksync_os_types"
+version = "0.0.1"
+dependencies = [
+ "alloy",
  "serde",
 ]

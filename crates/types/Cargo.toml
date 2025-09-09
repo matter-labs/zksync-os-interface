@@ -1,5 +1,5 @@
 [package]
-name = "zksync_os_interface"
+name = "zksync_os_types"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -10,12 +10,12 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-alloy = { workspace = true, default-features = false, features = ["consensus"] }
-zksync_os_types = { workspace = true, default-features = false }
+alloy = { workspace = true, default-features = false }
+serde = { workspace = true, default-features = false, optional = true }
 
 [features]
 serde = [
-    "alloy/serde",
-    "zksync_os_types/serde",
+    "dep:serde",
+    "alloy/serde"
 ]
 default = ["serde"]

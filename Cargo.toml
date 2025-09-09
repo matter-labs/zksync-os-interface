@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "crates/interface",
+    "crates/interface", "crates/types",
 ]
 resolver = "3"
 
@@ -17,3 +17,5 @@ categories = ["cryptography"]
 [workspace.dependencies]
 alloy = { version = "1.0.30", default-features = false }
 serde = { version = "1.0.219", default-features = false }
+
+zksync_os_types = { path = "crates/types", default-features = false }

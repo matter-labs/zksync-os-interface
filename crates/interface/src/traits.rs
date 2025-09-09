@@ -1,6 +1,7 @@
-use crate::error::InvalidTransaction;
-use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
+use zksync_os_types::error::InvalidTransaction;
+use crate::output::{BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy::primitives::B256;
+use zksync_os_types::BlockContext;
 
 pub trait ReadStorage: 'static {
     fn read(&mut self, key: B256) -> Option<B256>;
