@@ -28,10 +28,12 @@ pub trait TxResultCallback: 'static {
 }
 
 pub trait RunBlock {
+    type Config;
     type Error: std::fmt::Display;
 
     fn run_block<T: ReadStorage, PS: PreimageSource, TS: TxSource, TR: TxResultCallback>(
         &self,
+        config: Self::Config,
         block_context: BlockContext,
         storage: T,
         preimage_source: PS,
@@ -41,10 +43,12 @@ pub trait RunBlock {
 }
 
 pub trait SimulateTx {
+    type Config;
     type Error: std::fmt::Display;
 
     fn simulate_tx<S: ReadStorage, PS: PreimageSource>(
         &self,
+        config: Self::Config,
         transaction: Vec<u8>,
         block_context: BlockContext,
         storage: S,
