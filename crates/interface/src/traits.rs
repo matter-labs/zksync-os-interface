@@ -31,6 +31,7 @@ pub trait RunBlock {
     type Error: std::fmt::Display;
 
     fn run_block<T: ReadStorage, PS: PreimageSource, TS: TxSource, TR: TxResultCallback>(
+        &self,
         block_context: BlockContext,
         storage: T,
         preimage_source: PS,
@@ -43,6 +44,7 @@ pub trait SimulateTx {
     type Error: std::fmt::Display;
 
     fn simulate_tx<S: ReadStorage, PS: PreimageSource>(
+        &self,
         transaction: Vec<u8>,
         block_context: BlockContext,
         storage: S,
