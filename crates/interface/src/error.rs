@@ -22,6 +22,8 @@ pub enum InvalidTransaction {
     GasPriceLessThanBasefee,
     /// `gas_limit` in the tx is bigger than `block_gas_limit`.
     CallerGasLimitMoreThanBlock,
+    /// `gas_limit` in the tx is bigger than individual transaction gas limit.
+    CallerGasLimitMoreThanTxLimit,
     /// Initial gas for a Call is bigger than `gas_limit`.
     ///
     /// Initial gas for a Call contains:
@@ -58,12 +60,20 @@ pub enum InvalidTransaction {
     InvalidChainId,
     /// Access list is not supported for blocks before the Berlin hardfork.
     AccessListNotSupported,
+    /// EIP-7702 transactions must have non-empty auth list.
+    AuthListIsEmpty,
+    /// Access list is not supported for blocks before the Berlin hardfork.
+    BlobElementIsNotSupported,
     /// Unacceptable gas per pubdata price.
     GasPerPubdataTooHigh,
     /// Block gas limit is too high.
     BlockGasLimitTooHigh,
     /// Protocol upgrade tx should be first in the block.
     UpgradeTxNotFirst,
+    /// EIP-7623 calldata cost is not paid
+    EIP7623IntrinsicGasIsTooLow,
+    /// Native resources cost is too high
+    NativeResourcesAreTooExpensive,
 
     /// Call during AA validation reverted
     Revert {
