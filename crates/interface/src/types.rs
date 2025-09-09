@@ -78,6 +78,7 @@ pub struct BlockOutput {
     pub tx_results: Vec<Result<TxOutput, InvalidTransaction>>,
     // TODO: will be returned per tx later
     pub storage_writes: Vec<StorageWrite>,
+    pub account_diffs: Vec<AccountDiff>,
     pub published_preimages: Vec<(B256, Vec<u8>, PreimageType)>,
     pub pubdata: Vec<u8>,
     pub computaional_native_used: u64,
@@ -93,6 +94,14 @@ pub struct StorageWrite {
     // In the future, we might want to remove these for performance reasons.
     pub account: Address,
     pub account_key: B256,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountDiff {
+    pub address: Address,
+    pub nonce: u64,
+    pub balance: U256,
+    pub bytecode_hash: B256,
 }
 
 #[repr(u8)]
