@@ -1,5 +1,5 @@
 use crate::error::InvalidTransaction;
-use crate::types::{BlockContext, BlockOutput, TxProcessingOutputOwned};
+use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy::primitives::B256;
 
 pub trait ReadStorage: 'static {
@@ -37,4 +37,15 @@ pub trait RunBlock {
         tx_source: TS,
         tx_result_callback: TR,
     ) -> Result<BlockOutput, Self::Error>;
+}
+
+pub trait SimulateTx {
+    type Error: std::fmt::Display;
+
+    fn simulate_tx<S: ReadStorage, PS: PreimageSource>(
+        transaction: Vec<u8>,
+        block_context: BlockContext,
+        storage: S,
+        preimage_source: PS,
+    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
 }
