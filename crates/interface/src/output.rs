@@ -1,8 +1,8 @@
 use alloc::vec::Vec;
 use alloy_consensus::{Header, Sealed};
 use alloy_primitives::{Address, B256, U256};
+use zksync_os_types::L2ToL1LogWithPreimage;
 use zksync_os_types::error::InvalidTransaction;
-use zksync_os_types::{L2ToL1LogWithPreimage, PreimageType};
 
 // Re-export alloy's Log
 pub use alloy_primitives::Log;
@@ -26,7 +26,7 @@ pub struct BlockOutput {
     // TODO: will be returned per tx later
     pub storage_writes: Vec<StorageWrite>,
     pub account_diffs: Vec<AccountDiff>,
-    pub published_preimages: Vec<(B256, Vec<u8>, PreimageType)>,
+    pub published_preimages: Vec<(B256, Vec<u8>)>,
     pub pubdata: Vec<u8>,
     pub computaional_native_used: u64,
 }

@@ -72,14 +72,6 @@ impl<'de> serde::Deserialize<'de> for BlockHashes {
     }
 }
 
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PreimageType {
-    Bytecode = 0,
-    AccountData = 1,
-}
-
 /// L2 to l1 log structure, used for merkle tree leaves.
 /// This structure holds both kinds of logs (user messages
 /// and l1 -> l2 tx logs).
