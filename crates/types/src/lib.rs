@@ -1,4 +1,5 @@
 pub mod error;
+pub mod primitives;
 
 use alloy_primitives::{Address, B256, U256};
 
