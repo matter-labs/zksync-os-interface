@@ -10,21 +10,6 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-alloy-consensus = { workspace = true, default-features = false }
-alloy-primitives = { workspace = true, default-features = false }
-zksync_os_types = { workspace = true, default-features = false }
-
-[features]
-default = ["std", "serde"]
-std = [
-    "alloy-consensus/std",
-    "alloy-primitives/std",
-    "zksync_os_types/std",
-]
-serde = [
-    "alloy-consensus/serde",
-    "alloy-primitives/serde",
-    "zksync_os_types/serde",
-]
-# Enables support for single core platforms without atomic CAS.
-unsafe-single-core-cas = ["zksync_os_types/unsafe-single-core-cas"]
+alloy-consensus = { workspace = true, features = ["serde"] }
+alloy-primitives = { workspace = true, features = ["serde"] }
+serde = { workspace = true, features = ["derive"] }
