@@ -37,7 +37,8 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Run clippy (core)
-        run: cargo clippy --all-targets --all-features --workspace -- -D warnings
+        # Purposefully exclude `portable-atomic` from features as it makes compilation fail in normal environments
+        run: cargo clippy --all-targets --features std,serde --workspace -- -D warnings
 
       - name: Build project
         run: cargo build --all-targets --workspace
