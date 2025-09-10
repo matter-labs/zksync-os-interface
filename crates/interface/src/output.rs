@@ -1,8 +1,8 @@
-use zksync_os_types::error::InvalidTransaction;
-use alloy_primitives::{Address, B256, U256};
-use alloy_consensus::{Header, Sealed};
-use zksync_os_types::{L2ToL1LogWithPreimage, PreimageType};
 use alloc::vec::Vec;
+use alloy_consensus::{Header, Sealed};
+use alloy_primitives::{Address, B256, U256};
+use zksync_os_types::error::InvalidTransaction;
+use zksync_os_types::{L2ToL1LogWithPreimage, PreimageType};
 
 // Re-export alloy's Log
 pub use alloy_primitives::Log;
