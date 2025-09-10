@@ -1,6 +1,9 @@
-use crate::error::InvalidTransaction;
-use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy::primitives::B256;
+use crate::output::{BlockOutput, TxOutput, TxProcessingOutputOwned};
+use alloc::fmt;
+use alloc::vec::Vec;
+use alloy_primitives::B256;
+use zksync_os_types::BlockContext;
+use zksync_os_types::error::InvalidTransaction;
 
 pub trait ReadStorage: 'static {
     fn read(&mut self, key: B256) -> Option<B256>;
@@ -29,7 +32,7 @@ pub trait TxResultCallback: 'static {
 
 pub trait RunBlock {
     type Config;
-    type Error: std::fmt::Display;
+    type Error: fmt::Display;
 
     fn run_block<T: ReadStorage, PS: PreimageSource, TS: TxSource, TR: TxResultCallback>(
         &self,
@@ -44,7 +47,7 @@ pub trait RunBlock {
 
 pub trait SimulateTx {
     type Config;
-    type Error: std::fmt::Display;
+    type Error: fmt::Display;
 
     fn simulate_tx<S: ReadStorage, PS: PreimageSource>(
         &self,

@@ -1,5 +1,5 @@
 [package]
-name = "zksync_os_interface"
+name = "zksync_os_types"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -10,21 +10,26 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-alloy-consensus = { workspace = true, default-features = false }
 alloy-primitives = { workspace = true, default-features = false }
-zksync_os_types = { workspace = true, default-features = false }
+bytes = { workspace = true, default-features = false }
+portable-atomic = { version = "1.11.1", default-features = false, optional = true }
+serde = { workspace = true, default-features = false, optional = true }
 
 [features]
 default = ["std", "serde"]
 std = [
-    "alloy-consensus/std",
     "alloy-primitives/std",
-    "zksync_os_types/std",
+    "bytes/std",
+    "serde/std",
 ]
 serde = [
-    "alloy-consensus/serde",
+    "dep:serde",
     "alloy-primitives/serde",
-    "zksync_os_types/serde",
+    "bytes/serde",
 ]
 # Enables support for single core platforms without atomic CAS.
-unsafe-single-core-cas = ["zksync_os_types/unsafe-single-core-cas"]
+unsafe-single-core-cas = [
+    "dep:portable-atomic",
+    "bytes/extra-platforms",
+    "portable-atomic/unsafe-assume-single-core"
+]

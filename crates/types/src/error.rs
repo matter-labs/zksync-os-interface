@@ -1,4 +1,4 @@
-use alloy::primitives::{Address, U256};
+use alloy_primitives::{Address, U256};
 
 // Taken from revm, contains changes
 ///
