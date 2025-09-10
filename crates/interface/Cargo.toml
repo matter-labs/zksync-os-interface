@@ -15,7 +15,12 @@ alloy-primitives = { workspace = true, default-features = false }
 zksync_os_types = { workspace = true, default-features = false }
 
 [features]
-default = ["serde"]
+default = ["std", "serde"]
+std = [
+    "alloy-consensus/std",
+    "alloy-primitives/std",
+    "zksync_os_types/std",
+]
 serde = [
     "alloy-consensus/serde",
     "alloy-primitives/serde",

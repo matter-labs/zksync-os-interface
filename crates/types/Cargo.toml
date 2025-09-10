@@ -16,7 +16,12 @@ portable-atomic = { version = "1.11.1", default-features = false, optional = tru
 serde = { workspace = true, default-features = false, optional = true }
 
 [features]
-default = ["serde"]
+default = ["std", "serde"]
+std = [
+    "alloy-primitives/std",
+    "bytes/std",
+    "serde/std",
+]
 serde = [
     "dep:serde",
     "alloy-primitives/serde",
