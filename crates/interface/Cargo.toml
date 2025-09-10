@@ -10,13 +10,15 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-alloy = { workspace = true, default-features = false, features = ["consensus"] }
+alloy-consensus = { workspace = true, default-features = false }
+alloy-primitives = { workspace = true, default-features = false }
 zksync_os_types = { workspace = true, default-features = false }
 
 [features]
 default = ["serde"]
 serde = [
-    "alloy/serde",
+    "alloy-consensus/serde",
+    "alloy-primitives/serde",
     "zksync_os_types/serde",
 ]
 # Use portable-atomic crate to support platforms without atomic CAS.

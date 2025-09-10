@@ -1,10 +1,10 @@
 use zksync_os_types::error::InvalidTransaction;
-use alloy::primitives::{Address, B256, U256};
-use alloy::consensus::{Header, Sealed};
+use alloy_primitives::{Address, B256, U256};
+use alloy_consensus::{Header, Sealed};
 use zksync_os_types::{L2ToL1LogWithPreimage, PreimageType};
 
 // Re-export alloy's Log
-pub use alloy::primitives::Log;
+pub use alloy_primitives::Log;
 
 #[derive(Debug, Clone)]
 pub struct TxProcessingOutputOwned {

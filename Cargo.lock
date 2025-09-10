@@ -3,19 +3,6 @@
 version = 4
 
 [[package]]
-name = "alloy"
-version = "1.0.30"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e2a5d689ccd182f1d138a61f081841b905034e0089f5278f6c200f2bcdab00a"
-dependencies = [
- "alloy-consensus",
- "alloy-core",
- "alloy-eips",
- "alloy-serde",
- "alloy-trie",
-]
-
-[[package]]
 name = "alloy-consensus"
 version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -37,15 +24,6 @@ dependencies = [
  "secp256k1",
  "serde",
  "thiserror",
-]
-
-[[package]]
-name = "alloy-core"
-version = "1.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfe6c56d58fbfa9f0f6299376e8ce33091fc6494239466814c3f54b55743cb09"
-dependencies = [
- "alloy-primitives",
 ]
 
 [[package]]
@@ -1267,7 +1245,8 @@ dependencies = [
 name = "zksync_os_interface"
 version = "0.0.1"
 dependencies = [
- "alloy",
+ "alloy-consensus",
+ "alloy-primitives",
  "zksync_os_types",
 ]
 
@@ -1275,7 +1254,7 @@ dependencies = [
 name = "zksync_os_types"
 version = "0.0.1"
 dependencies = [
- "alloy",
+ "alloy-primitives",
  "bytes",
  "portable-atomic",
  "serde",
