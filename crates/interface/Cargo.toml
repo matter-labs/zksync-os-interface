@@ -26,5 +26,5 @@ serde = [
     "alloy-primitives/serde",
     "zksync_os_types/serde",
 ]
-# Use portable-atomic crate to support platforms without atomic CAS.
-portable-atomic = ["zksync_os_types/portable-atomic"]
+# Enables support for single core platforms without atomic CAS.
+unsafe-single-core-cas = ["zksync_os_types/unsafe-single-core-cas"]

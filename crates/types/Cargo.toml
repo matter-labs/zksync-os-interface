@@ -27,8 +27,8 @@ serde = [
     "alloy-primitives/serde",
     "bytes/serde",
 ]
-# Use portable-atomic crate to support platforms without atomic CAS.
-portable-atomic = [
+# Enables support for single core platforms without atomic CAS.
+unsafe-single-core-cas = [
     "dep:portable-atomic",
     "bytes/extra-platforms",
     "portable-atomic/unsafe-assume-single-core"
