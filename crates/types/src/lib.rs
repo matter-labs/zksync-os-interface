@@ -1,7 +1,12 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
+extern crate alloc;
+
 pub mod error;
 pub mod primitives;
 
-use alloy_primitives::{Address, B256, U256};
+use alloc::vec::Vec;
+use primitives::{Address, B256, U256};
 
 // Re-export alloy's Log struct
 pub use alloy_primitives::Log;
