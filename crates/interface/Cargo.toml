@@ -14,8 +14,10 @@ alloy = { workspace = true, default-features = false, features = ["consensus"] }
 zksync_os_types = { workspace = true, default-features = false }
 
 [features]
+default = ["serde"]
 serde = [
     "alloy/serde",
     "zksync_os_types/serde",
 ]
-default = ["serde"]
+# Use portable-atomic crate to support platforms without atomic CAS.
+portable-atomic = ["zksync_os_types/portable-atomic"]

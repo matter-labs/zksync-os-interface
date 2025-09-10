@@ -11,11 +11,16 @@ categories.workspace = true
 
 [dependencies]
 alloy = { workspace = true, default-features = false }
+bytes = { workspace = true, default-features = false }
+portable-atomic = { version = "1.11.1", default-features = false, optional = true }
 serde = { workspace = true, default-features = false, optional = true }
 
 [features]
+default = ["serde"]
 serde = [
     "dep:serde",
-    "alloy/serde"
+    "alloy/serde",
+    "bytes/serde",
 ]
-default = ["serde"]
+# Use portable-atomic crate to support platforms without atomic CAS.
+portable-atomic = ["bytes/extra-platforms", "portable-atomic/unsafe-assume-single-core"]
