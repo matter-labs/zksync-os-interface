@@ -1,6 +1,6 @@
 use zksync_os_types::error::InvalidTransaction;
 use crate::output::{BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy::primitives::B256;
+use alloy_primitives::B256;
 use zksync_os_types::BlockContext;
 
 pub trait ReadStorage: 'static {

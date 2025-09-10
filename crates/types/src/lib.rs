@@ -1,9 +1,9 @@
 pub mod error;
 
-use alloy::primitives::{Address, B256, U256};
+use alloy_primitives::{Address, B256, U256};
 
 // Re-export alloy's Log struct
-pub use alloy::primitives::Log;
+pub use alloy_primitives::Log;
 
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
