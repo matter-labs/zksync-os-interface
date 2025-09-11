@@ -28,5 +28,5 @@ jobs:
       config: '.github/release-please/config.json'          # Path to the configuration file
       manifest: '.github/release-please/manifest.json'      # Path to the manifest file
       update-cargo-lock: true                               # Update Cargo.lock file in the release PR
-      publish-to-crates-io: false                           # Enable publishing to crates.io
+      publish-to-crates-io: true                            # Enable publishing to crates.io
       dependencies: 'clang libclang-dev'                    # Additional Linux dependencies to install
