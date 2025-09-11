@@ -37,7 +37,6 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Run clippy (core)
-        # Purposefully exclude `unsafe-single-core-cas` from features as it makes compilation fail in normal environments
         run: cargo clippy --all-targets --all-features --workspace -- -D warnings
 
       - name: Build project
