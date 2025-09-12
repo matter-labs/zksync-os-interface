@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.2...v0.0.3) (2025-09-12)
+
+
+### Features
+
+* publish crate ([#14](https://github.com/matter-labs/zksync-os-interface/issues/14)) ([8a3e417](https://github.com/matter-labs/zksync-os-interface/commit/8a3e4175538b5ca8f6a24a553ae0f7f5deea5f16))
+
 ## [0.0.2](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.1...v0.0.2) (2025-09-11)
 
 
