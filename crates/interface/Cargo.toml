@@ -1,5 +1,6 @@
 [package]
 name = "zksync_os_interface"
+description = "MultiVM interface for ZKsync OS"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
