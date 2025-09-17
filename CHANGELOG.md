@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.4...v0.0.5) (2025-09-17)
+
+
+### Features
+
+* rename protocol version ([#18](https://github.com/matter-labs/zksync-os-interface/issues/18)) ([a803e72](https://github.com/matter-labs/zksync-os-interface/commit/a803e72331f44164d95dcb64be93065b19e582f0))
+
 ## [0.0.4](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.3...v0.0.4) (2025-09-12)
 
 
