@@ -133,9 +133,8 @@ pub struct BlockContext {
     /// Source of randomness, currently holds the value
     /// of prevRandao.
     pub mix_hash: U256,
-    /// Version of the protocol.
-    /// It's used to determine the implementation of ZKsync OS and its config.
-    pub protocol_version: u32,
+    /// Version of the ZKsync OS and its config to be used for this block.
+    pub execution_version: u32,
 }
 
 /// Array of previous block hashes.
