@@ -1,3 +1,4 @@
+use alloc::string::String;
 use alloy_primitives::{Address, U256};
 
 // Taken from revm, contains changes

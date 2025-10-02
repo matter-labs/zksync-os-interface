@@ -1,4 +1,5 @@
 use crate::error::EvmError;
+use alloc::vec::Vec;
 use alloy_primitives::{Address, B256, U256};
 
 pub trait EvmTracer {
