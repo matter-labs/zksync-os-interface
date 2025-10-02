@@ -11,6 +11,12 @@ pub trait EvmTracer {
     /// Note: `result` is None if execution is terminated due to internal ZKsync OS error (e.g. out-of-native-resources)
     fn after_execution_frame_completed(&mut self, result: Option<(EvmResources, CallResult)>);
 
+    /// Is called on storage read produced by bytecode execution in EVM
+    fn on_storage_read(&mut self, is_transient: bool, address: Address, key: B256, value: B256);
+
+    /// Is called on storage read produced by bytecode execution in EVM
+    fn on_storage_write(&mut self, is_transient: bool, address: Address, key: B256, value: B256);
+
     /// Is called on a change of bytecode for some account.
     /// `new_raw_bytecode` can be None if bytecode is unknown at the moment of change (e.g. force deploy by hash in system hook)
     ///
@@ -151,6 +157,24 @@ impl EvmTracer for NopTracer {
     fn on_new_execution_frame(&mut self, _request: impl EvmRequest) {}
 
     fn after_execution_frame_completed(&mut self, _result: Option<(EvmResources, CallResult)>) {}
+
+    fn on_storage_read(
+        &mut self,
+        _is_transient: bool,
+        _address: Address,
+        _key: B256,
+        _value: B256,
+    ) {
+    }
+
+    fn on_storage_write(
+        &mut self,
+        _is_transient: bool,
+        _address: Address,
+        _key: B256,
+        _value: B256,
+    ) {
+    }
 
     fn on_bytecode_change(
         &mut self,
