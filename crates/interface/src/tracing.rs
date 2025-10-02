@@ -1,6 +1,5 @@
-use crate::error::EvmError;
-use alloc::vec::Vec;
 use alloy_primitives::{Address, B256, U256};
+use zksync_os_evm_errors::EvmError;
 
 pub trait EvmTracer {
     /// Hook immediately before external call or deployment frame execution

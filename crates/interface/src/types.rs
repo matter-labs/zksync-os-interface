@@ -1,7 +1,7 @@
 use crate::error::InvalidTransaction;
-use alloc::vec::Vec;
 use alloy_consensus::{Header, Sealed};
 use alloy_primitives::{Address, B256, U256};
+use serde::{Deserialize, Serialize};
 
 // Re-export alloy's Log
 pub use alloy_primitives::Log;
@@ -115,8 +115,7 @@ pub enum ExecutionResult {
     Revert(Vec<u8>),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BlockContext {
     // Chain id is temporarily also added here (so that it can be easily passed from the oracle)
     // long term, we have to decide whether we want to keep it here, or add a separate oracle
@@ -151,7 +150,6 @@ impl Default for BlockHashes {
     }
 }
 
-#[cfg(feature = "serde")]
 impl serde::Serialize for BlockHashes {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -161,7 +159,6 @@ impl serde::Serialize for BlockHashes {
     }
 }
 
-#[cfg(feature = "serde")]
 impl<'de> serde::Deserialize<'de> for BlockHashes {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where

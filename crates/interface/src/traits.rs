@@ -1,10 +1,9 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::EvmTracer;
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloc::collections::VecDeque;
-use alloc::fmt;
-use alloc::vec::Vec;
 use alloy_primitives::B256;
+use std::collections::VecDeque;
+use std::fmt;
 
 pub trait ReadStorage: 'static {
     fn read(&mut self, key: B256) -> Option<B256>;
