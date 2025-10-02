@@ -181,4 +181,5 @@ pub enum EvmError {
     CreateContractSizeLimit,
     CreateInitcodeSizeLimit,
     CreateContractStartingWithEF,
+    Other(String),
 }
