@@ -60,6 +60,7 @@ pub trait RunBlock {
     type Config;
     type Error: fmt::Display;
 
+    #[allow(clippy::too_many_arguments)]
     fn run_block<
         Storage: ReadStorage,
         PreimgSrc: PreimageSource,
