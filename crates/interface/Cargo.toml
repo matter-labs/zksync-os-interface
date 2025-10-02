@@ -13,6 +13,8 @@ categories.workspace = true
 [dependencies]
 alloy-consensus = { workspace = true, default-features = false }
 alloy-primitives = { workspace = true, default-features = false }
+bytes = { workspace = true, default-features = false }
+portable-atomic = { version = "1.11.1", default-features = false, optional = true }
 serde = { workspace = true, features = ["derive"], optional = true }
 
 [features]
@@ -25,4 +27,10 @@ serde = [
     "alloy-consensus/serde",
     "alloy-primitives/serde",
     "dep:serde",
+]
+# Enables support for single core platforms without atomic CAS.
+unsafe-single-core-cas = [
+    "dep:portable-atomic",
+    "bytes/extra-platforms",
+    "portable-atomic/unsafe-assume-single-core"
 ]
