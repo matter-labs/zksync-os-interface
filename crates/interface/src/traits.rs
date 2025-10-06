@@ -1,5 +1,5 @@
 use crate::error::InvalidTransaction;
-use crate::tracing::EvmTracer;
+use crate::tracing::{AnyTracer, EvmTracer};
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::B256;
 use std::collections::VecDeque;
@@ -65,7 +65,7 @@ pub trait RunBlock {
         PreimgSrc: PreimageSource,
         TrSrc: TxSource,
         TrCallback: TxResultCallback,
-        Tracer: EvmTracer,
+        Tracer: AnyTracer,
     >(
         &self,
         config: Self::Config,

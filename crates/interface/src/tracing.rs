@@ -1,6 +1,14 @@
 use alloy_primitives::{Address, B256, U256};
 use zksync_os_evm_errors::EvmError;
 
+/// Generic tracer for all execution environments.
+///
+/// Only EVM is supported for now.
+pub trait AnyTracer {
+    /// Transform into [`EvmTracer`] if possible.
+    fn as_evm(&mut self) -> Option<&mut impl EvmTracer>;
+}
+
 pub trait EvmTracer {
     /// Hook immediately before external call or deployment frame execution
     fn on_new_execution_frame(&mut self, request: impl EvmRequest);
@@ -151,6 +159,12 @@ pub enum CallModifier {
 /// Basic tracer that does nothing.
 #[derive(Default)]
 pub struct NopTracer;
+
+impl AnyTracer for NopTracer {
+    fn as_evm(&mut self) -> Option<&mut impl EvmTracer> {
+        Some(self)
+    }
+}
 
 impl EvmTracer for NopTracer {
     fn on_new_execution_frame(&mut self, _request: impl EvmRequest) {}
