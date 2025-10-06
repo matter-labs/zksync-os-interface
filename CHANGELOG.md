@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.5...v0.0.6) (2025-10-06)
+
+
+### Features
+
+* support for EVM tracing ([#20](https://github.com/matter-labs/zksync-os-interface/issues/20)) ([301d6e0](https://github.com/matter-labs/zksync-os-interface/commit/301d6e08b412466f6b3e8c50de6073a48079086f))
+
 ## [0.0.5](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.4...v0.0.5) (2025-09-17)
 
 
