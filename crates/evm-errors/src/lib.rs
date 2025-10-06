@@ -2,8 +2,6 @@
 
 extern crate alloc;
 
-use alloc::string::String;
-
 /// Internal reasons of possible EVM failures. Declared in a separate module for reuse in tracers.
 /// Copied from Geth and modified: https://github.com/ethereum/go-ethereum/blob/3ff99ae52c420477020ae957a61c5c216ac7e7f5/core/vm/errors.go
 ///
@@ -42,5 +40,4 @@ pub enum EvmError {
     CreateContractSizeLimit,
     CreateInitcodeSizeLimit,
     CreateContractStartingWithEF,
-    Other(String),
 }
