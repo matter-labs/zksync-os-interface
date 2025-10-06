@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "crates/evm-errors",
     "crates/interface"
 ]
 resolver = "3"
@@ -18,3 +19,5 @@ categories = ["cryptography"]
 alloy-consensus = { version = "1.0.30" }
 alloy-primitives = { version = "1.0.30" }
 serde = { version = "1.0.219" }
+
+zksync_os_evm_errors = { version = "0.0.5", path = "crates/evm-errors" }

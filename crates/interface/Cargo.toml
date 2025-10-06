@@ -11,6 +11,8 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
+zksync_os_evm_errors = { workspace = true }
+
 alloy-consensus = { workspace = true, features = ["serde"] }
 alloy-primitives = { workspace = true, features = ["serde"] }
 serde = { workspace = true, features = ["derive"] }

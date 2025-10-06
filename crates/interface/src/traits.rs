@@ -1,6 +1,8 @@
 use crate::error::InvalidTransaction;
+use crate::tracing::{AnyTracer, EvmTracer};
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::B256;
+use std::collections::VecDeque;
 use std::fmt;
 
 pub trait ReadStorage: 'static {
@@ -28,18 +30,51 @@ pub trait TxResultCallback: 'static {
     );
 }
 
+#[derive(Clone)]
+pub struct TxListSource {
+    pub transactions: VecDeque<Vec<u8>>,
+}
+
+impl TxSource for TxListSource {
+    fn get_next_tx(&mut self) -> NextTxResponse {
+        match self.transactions.pop_front() {
+            Some(tx) => NextTxResponse::Tx(tx),
+            None => NextTxResponse::SealBlock,
+        }
+    }
+}
+
+#[derive(Clone)]
+pub struct NoopTxCallback;
+
+impl TxResultCallback for NoopTxCallback {
+    fn tx_executed(
+        &mut self,
+        _tx_execution_result: Result<TxProcessingOutputOwned, InvalidTransaction>,
+    ) {
+    }
+}
+
 pub trait RunBlock {
     type Config;
     type Error: fmt::Display;
 
-    fn run_block<T: ReadStorage, PS: PreimageSource, TS: TxSource, TR: TxResultCallback>(
+    #[allow(clippy::too_many_arguments)]
+    fn run_block<
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        TrSrc: TxSource,
+        TrCallback: TxResultCallback,
+        Tracer: AnyTracer,
+    >(
         &self,
         config: Self::Config,
         block_context: BlockContext,
-        storage: T,
-        preimage_source: PS,
-        tx_source: TS,
-        tx_result_callback: TR,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        tx_source: TrSrc,
+        tx_result_callback: TrCallback,
+        tracer: &mut Tracer,
     ) -> Result<BlockOutput, Self::Error>;
 }
 
@@ -47,12 +82,13 @@ pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
 
-    fn simulate_tx<S: ReadStorage, PS: PreimageSource>(
+    fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: EvmTracer>(
         &self,
         config: Self::Config,
         transaction: Vec<u8>,
         block_context: BlockContext,
-        storage: S,
-        preimage_source: PS,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        tracer: &mut Tracer,
     ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
 }
