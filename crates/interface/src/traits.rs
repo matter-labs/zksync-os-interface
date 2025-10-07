@@ -1,5 +1,5 @@
 use crate::error::InvalidTransaction;
-use crate::tracing::{AnyTracer, EvmTracer};
+use crate::tracing::AnyTracer;
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::B256;
 use std::collections::VecDeque;
@@ -82,7 +82,7 @@ pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
 
-    fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: EvmTracer>(
+    fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: AnyTracer>(
         &self,
         config: Self::Config,
         transaction: Vec<u8>,
