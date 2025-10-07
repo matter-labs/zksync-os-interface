@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.7](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.6...v0.0.7) (2025-10-07)
+
+
+### Bug Fixes
+
+* Fix simulate tx trait ([#23](https://github.com/matter-labs/zksync-os-interface/issues/23)) ([d17bd1c](https://github.com/matter-labs/zksync-os-interface/commit/d17bd1c048c832cd3b497abf32f274b705cad1b7))
+* Replace gas_per_pubdata with pubdata_price ([#22](https://github.com/matter-labs/zksync-os-interface/issues/22)) ([e40086a](https://github.com/matter-labs/zksync-os-interface/commit/e40086a1623e49de08e26317ce73320b1c4f91bf))
+
 ## [0.0.6](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.5...v0.0.6) (2025-10-06)
 
 
