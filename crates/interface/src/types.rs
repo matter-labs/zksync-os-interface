@@ -125,7 +125,7 @@ pub struct BlockContext {
     pub block_hashes: BlockHashes,
     pub timestamp: u64,
     pub eip1559_basefee: U256,
-    pub gas_per_pubdata: U256,
+    pub pubdata_price: U256,
     pub native_price: U256,
     pub coinbase: Address,
     pub gas_limit: u64,
