@@ -1,7 +1,8 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::AnyTracer;
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::B256;
+use alloy_primitives::{Address, B256};
+use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
 
@@ -15,7 +16,8 @@ pub trait PreimageSource: 'static {
 
 #[derive(Debug, Clone)]
 pub enum NextTxResponse {
-    Tx(Vec<u8>),
+    ZkTx(Vec<u8>),
+    EthTx(Vec<u8>, Address),
     SealBlock,
 }
 
@@ -30,15 +32,36 @@ pub trait TxResultCallback: 'static {
     );
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum EncodedTx {
+    Zk(Vec<u8>),
+    Eth(Vec<u8>, Address),
+}
+
+impl EncodedTx {
+    pub fn len(&self) -> usize {
+        match self {
+            Self::Zk(tx) | Self::Eth(tx, _) => tx.len(),
+        }
+    }
+
+    pub fn bytes(&self) -> &Vec<u8> {
+        match self {
+            Self::Zk(tx) | Self::Eth(tx, _) => tx,
+        }
+    }
+}
+
+#[derive(Clone, Serialize, Deserialize)]
 pub struct TxListSource {
-    pub transactions: VecDeque<Vec<u8>>,
+    pub transactions: VecDeque<EncodedTx>,
 }
 
 impl TxSource for TxListSource {
     fn get_next_tx(&mut self) -> NextTxResponse {
         match self.transactions.pop_front() {
-            Some(tx) => NextTxResponse::Tx(tx),
+            Some(EncodedTx::Zk(tx)) => NextTxResponse::ZkTx(tx),
+            Some(EncodedTx::Eth(tx, from)) => NextTxResponse::EthTx(tx, from),
             None => NextTxResponse::SealBlock,
         }
     }
@@ -85,7 +108,7 @@ pub trait SimulateTx {
     fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: AnyTracer>(
         &self,
         config: Self::Config,
-        transaction: Vec<u8>,
+        transaction: EncodedTx,
         block_context: BlockContext,
         storage: Storage,
         preimage_source: PreimgSrc,
