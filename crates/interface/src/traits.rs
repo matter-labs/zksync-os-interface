@@ -1,7 +1,8 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::AnyTracer;
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::B256;
+use alloy_primitives::{Address, B256};
+use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
 
@@ -15,7 +16,7 @@ pub trait PreimageSource: 'static {
 
 #[derive(Debug, Clone)]
 pub enum NextTxResponse {
-    Tx(Vec<u8>),
+    Tx(EncodedTx),
     SealBlock,
 }
 
@@ -30,9 +31,30 @@ pub trait TxResultCallback: 'static {
     );
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum EncodedTx {
+    Abi(Vec<u8>),
+    Rlp(Vec<u8>, Address),
+}
+
+impl EncodedTx {
+    #[allow(clippy::len_without_is_empty)]
+    pub fn len(&self) -> usize {
+        match self {
+            Self::Abi(tx) | Self::Rlp(tx, _) => tx.len(),
+        }
+    }
+
+    pub fn bytes(&self) -> &Vec<u8> {
+        match self {
+            Self::Abi(tx) | Self::Rlp(tx, _) => tx,
+        }
+    }
+}
+
+#[derive(Clone, Serialize, Deserialize)]
 pub struct TxListSource {
-    pub transactions: VecDeque<Vec<u8>>,
+    pub transactions: VecDeque<EncodedTx>,
 }
 
 impl TxSource for TxListSource {
@@ -85,7 +107,7 @@ pub trait SimulateTx {
     fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: AnyTracer>(
         &self,
         config: Self::Config,
-        transaction: Vec<u8>,
+        transaction: EncodedTx,
         block_context: BlockContext,
         storage: Storage,
         preimage_source: PreimgSrc,
