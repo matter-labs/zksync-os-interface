@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.7...v0.0.8) (2025-10-16)
+
+
+### Features
+
+* support both rlp and abi encoded txs ([#28](https://github.com/matter-labs/zksync-os-interface/issues/28)) ([6d5957d](https://github.com/matter-labs/zksync-os-interface/commit/6d5957dfdfde1701f5adf3f732aef40a60634582))
+
 ## [0.0.7](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.6...v0.0.7) (2025-10-07)
 
 
