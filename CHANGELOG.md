@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.8...v0.0.9) (2025-10-31)
+
+
+### Features
+
+* Changes for 4844 support ([#30](https://github.com/matter-labs/zksync-os-interface/issues/30)) ([ec7cb2b](https://github.com/matter-labs/zksync-os-interface/commit/ec7cb2b97bb384efc1296b9b026bcb056be81494))
+
 ## [0.0.8](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.7...v0.0.8) (2025-10-16)
 
 
