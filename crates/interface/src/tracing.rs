@@ -135,6 +135,7 @@ pub struct EvmResources {
     pub native: u64,
 }
 
+#[allow(clippy::len_without_is_empty)]
 pub trait EvmStackInterface {
     fn to_slice(&self) -> &[U256];
     fn len(&self) -> usize;
