@@ -105,6 +105,8 @@ pub trait EvmFrameInterface {
     fn instruction_pointer(&self) -> usize;
     /// Resources left
     fn resources(&self) -> EvmResources;
+    /// EVM stack
+    fn stack(&self) -> &impl EvmStackInterface;
     /// Caller address
     fn caller(&self) -> Address;
     /// Callee address
@@ -131,6 +133,12 @@ pub trait EvmFrameInterface {
 pub struct EvmResources {
     pub ergs: u64,
     pub native: u64,
+}
+
+pub trait EvmStackInterface {
+    fn to_slice(&self) -> &[U256];
+    fn len(&self) -> usize;
+    fn peek_n(&self, index: usize) -> Result<&U256, EvmError>;
 }
 
 /// Result after call execution
