@@ -20,4 +20,4 @@ alloy-consensus = { version = "1.0.30" }
 alloy-primitives = { version = "1.0.30" }
 serde = { version = "1.0.219" }
 
-zksync_os_evm_errors = { version = "=0.0.9", path = "crates/evm-errors" }
+zksync_os_evm_errors = { version = "=0.0.10", path = "crates/evm-errors" }
