@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.9...v0.0.10) (2025-11-13)
+
+
+### Features
+
+* add 'stack' to tracing interface ([#32](https://github.com/matter-labs/zksync-os-interface/issues/32)) ([1c9afae](https://github.com/matter-labs/zksync-os-interface/commit/1c9afae82b3a1197bac991bea772394b8c8ff0f8))
+
 ## [0.0.9](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.8...v0.0.9) (2025-10-31)
 
 
