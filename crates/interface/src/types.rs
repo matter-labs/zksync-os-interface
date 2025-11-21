@@ -205,3 +205,13 @@ pub struct L2ToL1LogWithPreimage {
     pub log: L2ToL1Log,
     pub preimage: Option<Vec<u8>>,
 }
+
+#[derive(Debug, Clone)]
+pub struct InteropRoot {
+    /// Source chain identifier (must be non-zero)
+    pub chain_id: u64,
+    /// Block or batch number from the source chain
+    pub block_or_batch_number: u64,
+    /// The message root sides. Note, that `sides` here are coming from `DynamicIncrementalMerkle` nomenclature.
+    pub sides: Vec<B256>,
+}

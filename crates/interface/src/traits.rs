@@ -1,6 +1,6 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::AnyTracer;
-use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
+use crate::types::{BlockContext, BlockOutput, InteropRoot, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::{Address, B256};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
@@ -96,6 +96,7 @@ pub trait RunBlock {
         preimage_source: PreimgSrc,
         tx_source: TrSrc,
         tx_result_callback: TrCallback,
+        interop_roots: &[InteropRoot],
         tracer: &mut Tracer,
     ) -> Result<BlockOutput, Self::Error>;
 }
@@ -111,6 +112,7 @@ pub trait SimulateTx {
         block_context: BlockContext,
         storage: Storage,
         preimage_source: PreimgSrc,
+        interop_roots: &[InteropRoot],
         tracer: &mut Tracer,
     ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
 }
