@@ -26,7 +26,6 @@ pub struct BlockOutput {
     pub storage_writes: Vec<StorageWrite>,
     pub account_diffs: Vec<AccountDiff>,
     pub published_preimages: Vec<(B256, Vec<u8>)>,
-    pub pubdata: Vec<u8>,
     pub computational_native_used: u64,
 }
 
