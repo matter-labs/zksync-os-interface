@@ -1,5 +1,5 @@
 use crate::error::InvalidTransaction;
-use crate::tracing::AnyTracer;
+use crate::tracing::{AnyTracer, AnyTxValidator};
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::{Address, B256};
 use serde::{Deserialize, Serialize};
@@ -98,13 +98,44 @@ pub trait RunBlock {
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
     ) -> Result<BlockOutput, Self::Error>;
-}
 
+    #[allow(clippy::too_many_arguments)]
+    fn run_block_with_validator<
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        TrSrc: TxSource,
+        TrCallback: TxResultCallback,
+        Tracer: AnyTracer,
+        Validator: AnyTxValidator,
+    >(
+        &self,
+        config: Self::Config,
+        block_context: BlockContext,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        tx_source: TrSrc,
+        tx_result_callback: TrCallback,
+        tracer: &mut Tracer,
+        _validator: &mut Validator,
+    ) -> Result<BlockOutput, Self::Error> {
+        self.run_block(
+            config,
+            block_context,
+            storage,
+            preimage_source,
+            tx_source,
+            tx_result_callback,
+            tracer,
+        )
+    }
+}
 pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
 
-    fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: AnyTracer>(
+    /// Old-style simulate_tx: no validator.
+    /// This is what V3/V4 forward_system crates already implement.
+    fn simulate_tx<Storage, PreimgSrc, Tracer>(
         &self,
         config: Self::Config,
         transaction: EncodedTx,
@@ -112,5 +143,39 @@ pub trait SimulateTx {
         storage: Storage,
         preimage_source: PreimgSrc,
         tracer: &mut Tracer,
-    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
+    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>
+    where
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        Tracer: AnyTracer;
+
+    /// New API: simulate with validator.
+    ///
+    /// Default implementation ignores the validator and just calls `simulate_tx`,
+    /// so all old forward_system versions stay compatible.
+    fn simulate_tx_with_validator<Storage, PreimgSrc, Tracer, Validator>(
+        &self,
+        config: Self::Config,
+        transaction: EncodedTx,
+        block_context: BlockContext,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        tracer: &mut Tracer,
+        _validator: &mut Validator,
+    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>
+    where
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        Tracer: AnyTracer,
+        Validator: AnyTxValidator,
+    {
+        self.simulate_tx(
+            config,
+            transaction,
+            block_context,
+            storage,
+            preimage_source,
+            tracer,
+        )
+    }
 }
