@@ -128,7 +128,7 @@ pub enum InvalidTransaction {
     /// Other unrecoverable error.
     /// Unrecoverable means that tx cannot become valid in the future and should be dropped.
     OtherUnrecoverable(String),
-    DeploymentNotAllowed {
+    FilteredByValidator {
         deployer: Address,
     },
 }
