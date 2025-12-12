@@ -262,17 +262,6 @@ pub trait TxValidator {
         Ok(())
     }
 
-    fn on_new_execution_frame(&mut self, _request: &impl EvmRequest) -> TxValidationResult {
-        Ok(())
-    }
-
-    fn after_execution_frame_completed(
-        &mut self,
-        _result: &Option<(EvmResources, CallResult<'_>)>,
-    ) -> TxValidationResult {
-        Ok(())
-    }
-
     fn finish_tx(&mut self) -> TxValidationResult {
         Ok(())
     }
