@@ -105,11 +105,12 @@ pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
 
+    #[allow(clippy::too_many_arguments)]
     fn simulate_tx<
         Storage: ReadStorage,
         PreimgSrc: PreimageSource,
         Tracer: AnyTracer,
-        Valdiator: AnyTxValidator,
+        Validator: AnyTxValidator,
     >(
         &self,
         config: Self::Config,
@@ -118,10 +119,6 @@ pub trait SimulateTx {
         storage: Storage,
         preimage_source: PreimgSrc,
         tracer: &mut Tracer,
-        validator: &mut Valdiator,
-    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>
-    where
-        Storage: ReadStorage,
-        PreimgSrc: PreimageSource,
-        Tracer: AnyTracer;
+        validator: &mut Validator,
+    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
 }
