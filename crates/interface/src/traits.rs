@@ -1,7 +1,7 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::AnyTracer;
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::{Address, B256};
+use alloy_primitives::{Address, B256, hex};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
@@ -31,10 +31,26 @@ pub trait TxResultCallback: 'static {
     );
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub enum EncodedTx {
     Abi(Vec<u8>),
     Rlp(Vec<u8>, Address),
+}
+
+impl fmt::Debug for EncodedTx {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Abi(bytes) => f
+                .debug_tuple("Abi")
+                .field(&format!("0x{}", hex::encode(bytes)))
+                .finish(),
+            Self::Rlp(bytes, addr) => f
+                .debug_tuple("Rlp")
+                .field(&format!("0x{}", hex::encode(bytes)))
+                .field(&format_args!("signer: {}", addr))
+                .finish(),
+        }
+    }
 }
 
 impl EncodedTx {
