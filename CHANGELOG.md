@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.12](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.11...v0.0.12) (2025-12-19)
+
+
+### Features
+
+* add code_size_limit to BlockContext ([#36](https://github.com/matter-labs/zksync-os-interface/issues/36)) ([52143fb](https://github.com/matter-labs/zksync-os-interface/commit/52143fba7b72e6ef2e10faaa464464d490614b04))
+
 ## [0.0.11](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.10...v0.0.11) (2025-12-19)
 
 
