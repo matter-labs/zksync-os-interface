@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.10...v0.0.11) (2025-12-19)
+
+
+### Features
+
+* pretty print RLP encoded tx in debug ([#37](https://github.com/matter-labs/zksync-os-interface/issues/37)) ([deab246](https://github.com/matter-labs/zksync-os-interface/commit/deab246cc81dc08d62e1220bb0cc4c22c0d8bdf5))
+
 ## [0.0.10](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.9...v0.0.10) (2025-11-13)
 
 
