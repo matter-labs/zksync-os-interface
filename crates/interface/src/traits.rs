@@ -1,5 +1,5 @@
 use crate::error::InvalidTransaction;
-use crate::tracing::AnyTracer;
+use crate::tracing::{AnyTracer, AnyTxValidator};
 use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::{Address, B256, hex};
 use serde::{Deserialize, Serialize};
@@ -104,6 +104,7 @@ pub trait RunBlock {
         TrSrc: TxSource,
         TrCallback: TxResultCallback,
         Tracer: AnyTracer,
+        Valdiator: AnyTxValidator,
     >(
         &self,
         config: Self::Config,
@@ -113,14 +114,20 @@ pub trait RunBlock {
         tx_source: TrSrc,
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
+        validator: &mut Valdiator,
     ) -> Result<BlockOutput, Self::Error>;
 }
-
 pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
 
-    fn simulate_tx<Storage: ReadStorage, PreimgSrc: PreimageSource, Tracer: AnyTracer>(
+    #[allow(clippy::too_many_arguments)]
+    fn simulate_tx<
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        Tracer: AnyTracer,
+        Validator: AnyTxValidator,
+    >(
         &self,
         config: Self::Config,
         transaction: EncodedTx,
@@ -128,5 +135,6 @@ pub trait SimulateTx {
         storage: Storage,
         preimage_source: PreimgSrc,
         tracer: &mut Tracer,
+        validator: &mut Validator,
     ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
 }
