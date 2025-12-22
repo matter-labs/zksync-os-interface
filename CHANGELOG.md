@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.12](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.11...v0.0.12) (2025-12-19)
+
+
+### Features
+
+* add code_size_limit to BlockContext ([#36](https://github.com/matter-labs/zksync-os-interface/issues/36)) ([52143fb](https://github.com/matter-labs/zksync-os-interface/commit/52143fba7b72e6ef2e10faaa464464d490614b04))
+
+## [0.0.11](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.10...v0.0.11) (2025-12-19)
+
+
+### Features
+
+* pretty print RLP encoded tx in debug ([#37](https://github.com/matter-labs/zksync-os-interface/issues/37)) ([deab246](https://github.com/matter-labs/zksync-os-interface/commit/deab246cc81dc08d62e1220bb0cc4c22c0d8bdf5))
+
 ## [0.0.10](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.9...v0.0.10) (2025-11-13)
 
 
