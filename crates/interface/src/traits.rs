@@ -5,13 +5,26 @@ use alloy_primitives::{Address, B256, hex};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
+use std::ops::DerefMut;
 
 pub trait ReadStorage: 'static {
     fn read(&mut self, key: B256) -> Option<B256>;
 }
 
+impl<T: ReadStorage> ReadStorage for Box<T> {
+    fn read(&mut self, key: B256) -> Option<B256> {
+        self.deref_mut().read(key)
+    }
+}
+
 pub trait PreimageSource: 'static {
     fn get_preimage(&mut self, hash: B256) -> Option<Vec<u8>>;
+}
+
+impl<T: PreimageSource> PreimageSource for Box<T> {
+    fn get_preimage(&mut self, hash: B256) -> Option<Vec<u8>> {
+        self.deref_mut().get_preimage(hash)
+    }
 }
 
 #[derive(Debug, Clone)]
