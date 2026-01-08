@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.13](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.12...v0.0.13) (2026-01-08)
+
+
+### Features
+
+* add `ReadStorage`/`PreimageSource` impls for `Box<T>` ([#43](https://github.com/matter-labs/zksync-os-interface/issues/43)) ([b355798](https://github.com/matter-labs/zksync-os-interface/commit/b355798ddca587c2093d7d38a05df7092943d5af))
+* add support for TxValidator alongside Tracer ([#35](https://github.com/matter-labs/zksync-os-interface/issues/35)) ([bdb2a98](https://github.com/matter-labs/zksync-os-interface/commit/bdb2a98981a67abf59253cf73a4a25c177bd9173))
+
+
+### Bug Fixes
+
+* "computaional_native_used" typo ([#42](https://github.com/matter-labs/zksync-os-interface/issues/42)) ([0685c97](https://github.com/matter-labs/zksync-os-interface/commit/0685c97913462670c8c837629a8153a9757e4aef))
+
 ## [0.0.12](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.11...v0.0.12) (2025-12-19)
 
 
