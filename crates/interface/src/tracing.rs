@@ -1,3 +1,4 @@
+use crate::error::InvalidTransaction;
 use alloy_primitives::{Address, B256, U256};
 use zksync_os_evm_errors::EvmError;
 
@@ -241,3 +242,32 @@ impl EvmTracer for NopTracer {
 
     fn on_create_request(&mut self, _is_create2: bool) {}
 }
+
+pub type TxValidationResult = Result<(), InvalidTransaction>;
+
+pub trait AnyTxValidator {
+    fn as_evm(&mut self) -> Option<&mut impl TxValidator>;
+}
+
+impl AnyTxValidator for NopValidator {
+    #[inline(always)]
+    fn as_evm(&mut self) -> Option<&mut impl TxValidator> {
+        // This validator *is* EVM-aware, so just return self.
+        Some(self)
+    }
+}
+
+pub trait TxValidator {
+    fn begin_tx(&mut self, _calldata: &[u8]) -> TxValidationResult {
+        Ok(())
+    }
+
+    fn finish_tx(&mut self) -> TxValidationResult {
+        Ok(())
+    }
+}
+
+#[derive(Default)]
+pub struct NopValidator;
+
+impl TxValidator for NopValidator {}
