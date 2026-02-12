@@ -136,7 +136,6 @@ pub struct BlockContext {
     /// Version of the ZKsync OS and its config to be used for this block.
     pub execution_version: u32,
     pub blob_fee: U256,
-    pub code_size_limit: Option<u32>,
 }
 
 /// Array of previous block hashes.
