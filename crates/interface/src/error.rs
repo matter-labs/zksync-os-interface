@@ -62,8 +62,8 @@ pub enum InvalidTransaction {
     AccessListNotSupported,
     /// EIP-7702 transactions must have non-empty auth list.
     AuthListIsEmpty,
-    /// Unacceptable gas per pubdata price.
-    GasPerPubdataTooHigh,
+    /// Unacceptable pubdata price.
+    PubdataPriceTooHigh,
     /// Block gas limit is too high.
     BlockGasLimitTooHigh,
     /// Protocol upgrade tx should be first in the block.
@@ -115,6 +115,8 @@ pub enum InvalidTransaction {
     BlockL2ToL1LogsLimitReached,
     /// 7702 has a null destination address
     EIP7702HasNullDestination,
+    /// The call's gas limit is too high for the system to process.
+    CallerGasLimitTooHigh,
     /// Invalid blob hash
     BlobElementIsNotSupported,
     /// Blob base fee per gas greater than max fee per blob gas
