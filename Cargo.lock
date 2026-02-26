@@ -2362,11 +2362,11 @@ dependencies = [
 
 [[package]]
 name = "zksync_os_evm_errors"
-version = "0.0.13"
+version = "0.0.14"
 
 [[package]]
 name = "zksync_os_interface"
-version = "0.0.13"
+version = "0.0.14"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives",

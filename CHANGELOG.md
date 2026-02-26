@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.14](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.13...v0.0.14) (2026-02-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* update invalid tx variants ([#48](https://github.com/matter-labs/zksync-os-interface/issues/48))
+* remove code size limit ([#49](https://github.com/matter-labs/zksync-os-interface/issues/49))
+
+### Bug Fixes
+
+* bump `bytes` and `keccak` crates ([#52](https://github.com/matter-labs/zksync-os-interface/issues/52)) ([50446a8](https://github.com/matter-labs/zksync-os-interface/commit/50446a81177cf6234dccc8e79b445a6b5029bdf1))
+* remove code size limit ([#49](https://github.com/matter-labs/zksync-os-interface/issues/49)) ([fa4c53e](https://github.com/matter-labs/zksync-os-interface/commit/fa4c53ed815d7ea13111ace7c0b7796fdf400bd3))
+* update invalid tx variants ([#48](https://github.com/matter-labs/zksync-os-interface/issues/48)) ([8a1d818](https://github.com/matter-labs/zksync-os-interface/commit/8a1d818fe1762aaf72a1ebe298e1f0327388961d))
+
 ## [0.0.13](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.12...v0.0.13) (2026-01-08)
 
 
