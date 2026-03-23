@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.0](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.14...v0.1.0) (2026-03-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* support native prover input generation ([#56](https://github.com/matter-labs/zksync-os-interface/issues/56))
+
+### Features
+
+* support native prover input generation ([#56](https://github.com/matter-labs/zksync-os-interface/issues/56)) ([2245b40](https://github.com/matter-labs/zksync-os-interface/commit/2245b4028a94df231cc205a231d661f8ed223c0b))
+
+
+### Bug Fixes
+
+* remove release version override ([#58](https://github.com/matter-labs/zksync-os-interface/issues/58)) ([6d17ae3](https://github.com/matter-labs/zksync-os-interface/commit/6d17ae338ef02a36c4b40edeb92f0be647c33f93))
+
 ## [0.0.14](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.13...v0.0.14) (2026-02-26)
 
 
