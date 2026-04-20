@@ -7,12 +7,12 @@
   "packages": {
     ".": {
       "component": "zksync-os-interface",
+      "release-as": "0.0.15",
       "extra-files": [
         {
           "type": "toml",
           "path": "Cargo.toml",
-          "jsonpath": "$.workspace.package.version",
-          "release-as": "0.0.15"
+          "jsonpath": "$.workspace.package.version"
         }
       ]
     }
