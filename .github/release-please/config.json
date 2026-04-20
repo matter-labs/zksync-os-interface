@@ -11,7 +11,8 @@
         {
           "type": "toml",
           "path": "Cargo.toml",
-          "jsonpath": "$.workspace.package.version"
+          "jsonpath": "$.workspace.package.version",
+          "release-as": "0.0.15"
         }
       ]
     }
