@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.0...v0.2.0) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* pass BeginTxContext to TxValidator::begin_tx ([#61](https://github.com/matter-labs/zksync-os-interface/issues/61))
+
+### Features
+
+* pass BeginTxContext to TxValidator::begin_tx ([#61](https://github.com/matter-labs/zksync-os-interface/issues/61)) ([875dbed](https://github.com/matter-labs/zksync-os-interface/commit/875dbedbedc4a10e00710674bafba243e0c0adec))
+
 ## [0.1.0](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.14...v0.1.0) (2026-03-23)
 
 
