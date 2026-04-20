@@ -245,6 +245,18 @@ impl EvmTracer for NopTracer {
 
 pub type TxValidationResult = Result<(), InvalidTransaction>;
 
+/// Context passed to [`TxValidator::begin_tx`] before a transaction is executed.
+///
+/// Carries the static transaction fields that a policy may inspect when deciding
+/// whether to admit a transaction.
+pub struct BeginTxContext<'a> {
+    pub from: Address,
+    pub to: Option<Address>,
+    pub value: U256,
+    pub calldata: &'a [u8],
+    pub gas_limit: u64,
+}
+
 pub trait AnyTxValidator {
     fn as_evm(&mut self) -> Option<&mut impl TxValidator>;
 }
@@ -258,7 +270,7 @@ impl AnyTxValidator for NopValidator {
 }
 
 pub trait TxValidator {
-    fn begin_tx(&mut self, _calldata: &[u8]) -> TxValidationResult {
+    fn begin_tx(&mut self, _ctx: &BeginTxContext<'_>) -> TxValidationResult {
         Ok(())
     }
 
