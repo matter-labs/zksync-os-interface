@@ -14,7 +14,7 @@
           "jsonpath": "$.workspace.package.version"
         }
       ],
-      "release-as": "0.0.14"
+      "release-as": "0.0.15"
     }
   }
 }
