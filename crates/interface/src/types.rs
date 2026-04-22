@@ -136,6 +136,9 @@ pub struct BlockContext {
     /// Version of the ZKsync OS and its config to be used for this block.
     pub execution_version: u32,
     pub blob_fee: U256,
+    /// Whether this block is executed on a Gateway chain.
+    /// Gateway chains support additional features such as FRI proof verification.
+    pub is_gateway: bool,
 }
 
 /// Array of previous block hashes.
