@@ -1,19 +1,33 @@
 # Changelog
 
-## [0.1.0](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.14...v0.1.0) (2026-03-23)
+## [0.1.1](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.15...v0.1.1) (2026-04-20)
 
 
 ### ⚠ BREAKING CHANGES
 
+* recover changes for native prover input generation ([#66](https://github.com/matter-labs/zksync-os-interface/issues/66))
+
+### Features
+
+* recover changes for native prover input generation ([#66](https://github.com/matter-labs/zksync-os-interface/issues/66)) ([a24e37a](https://github.com/matter-labs/zksync-os-interface/commit/a24e37ad83c640e93a314fd6fa1173988e64e959))
+
+## [0.0.15](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.14...v0.0.15) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* pass BeginTxContext to TxValidator::begin_tx ([#61](https://github.com/matter-labs/zksync-os-interface/issues/61))
 * support native prover input generation ([#56](https://github.com/matter-labs/zksync-os-interface/issues/56))
 
 ### Features
 
+* pass BeginTxContext to TxValidator::begin_tx ([#61](https://github.com/matter-labs/zksync-os-interface/issues/61)) ([875dbed](https://github.com/matter-labs/zksync-os-interface/commit/875dbedbedc4a10e00710674bafba243e0c0adec))
 * support native prover input generation ([#56](https://github.com/matter-labs/zksync-os-interface/issues/56)) ([2245b40](https://github.com/matter-labs/zksync-os-interface/commit/2245b4028a94df231cc205a231d661f8ed223c0b))
 
 
 ### Bug Fixes
 
+* fix release-as for 0.0.15 ([#65](https://github.com/matter-labs/zksync-os-interface/issues/65)) ([0d8e9dd](https://github.com/matter-labs/zksync-os-interface/commit/0d8e9dd03a9cea1d2a86b778aeb760a6539681ef))
 * remove release version override ([#58](https://github.com/matter-labs/zksync-os-interface/issues/58)) ([6d17ae3](https://github.com/matter-labs/zksync-os-interface/commit/6d17ae338ef02a36c4b40edeb92f0be647c33f93))
 
 ## [0.0.14](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.13...v0.0.14) (2026-02-26)
