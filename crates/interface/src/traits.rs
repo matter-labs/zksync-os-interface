@@ -44,6 +44,29 @@ pub trait TxResultCallback: 'static {
     );
 }
 
+/// Source of raw FRI proof bytes keyed by `statement_versioned_hash`.
+///
+/// Used by the bootloader's FRI oracle responder to resolve
+/// `FRI_PROOF_QUERY_ID` queries during gateway block execution.
+pub trait FriProofSidecarSource: 'static {
+    /// Returns the raw (bincode-serialized) `UnrolledProgramProof`
+    /// bytes stored under this `statement_versioned_hash`.
+    ///
+    /// Returns `None` if the sidecar has no entry for this hash.
+    fn get_proof_bytes(&mut self, statement_versioned_hash: B256) -> Option<Vec<u8>>;
+}
+
+/// No-op sidecar source used when FRI proof verification is not
+/// wired up (non-gateway chains, eth_call, ETH-replay, etc.).
+#[derive(Debug, Clone, Copy, Default)]
+pub struct NoFriProofSidecar;
+
+impl FriProofSidecarSource for NoFriProofSidecar {
+    fn get_proof_bytes(&mut self, _statement_versioned_hash: B256) -> Option<Vec<u8>> {
+        None
+    }
+}
+
 #[derive(Clone, Serialize, Deserialize)]
 pub enum EncodedTx {
     Abi(Vec<u8>),
@@ -115,6 +138,7 @@ pub trait RunBlock {
         Storage: ReadStorage,
         PreimgSrc: PreimageSource,
         TrSrc: TxSource,
+        FriSidecar: FriProofSidecarSource,
         TrCallback: TxResultCallback,
         Tracer: AnyTracer,
         Valdiator: AnyTxValidator,
@@ -125,6 +149,7 @@ pub trait RunBlock {
         storage: Storage,
         preimage_source: PreimgSrc,
         tx_source: TrSrc,
+        fri_proof_sidecar: FriSidecar,
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
         validator: &mut Valdiator,
