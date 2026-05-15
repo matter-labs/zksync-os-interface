@@ -1,6 +1,6 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::{AnyTracer, AnyTxValidator};
-use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
+use crate::types::{BlockContext, TxOutput, TxProcessingOutputOwned};
 use alloy_primitives::{Address, B256, hex};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
@@ -132,6 +132,7 @@ impl TxResultCallback for NoopTxCallback {
 pub trait RunBlock {
     type Config;
     type Error: fmt::Display;
+    type BlockOutput;
 
     #[allow(clippy::too_many_arguments)]
     fn run_block<
@@ -153,8 +154,9 @@ pub trait RunBlock {
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
         validator: &mut Valdiator,
-    ) -> Result<BlockOutput, Self::Error>;
+    ) -> Result<Self::BlockOutput, Self::Error>;
 }
+
 pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;

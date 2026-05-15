@@ -1,5 +1,3 @@
-use crate::error::InvalidTransaction;
-use alloy_consensus::{Header, Sealed};
 use alloy_primitives::{Address, B256, U256};
 use serde::{Deserialize, Serialize};
 
@@ -16,18 +14,6 @@ pub struct TxProcessingOutputOwned {
     pub computational_native_used: u64,
     pub native_used: u64,
     pub pubdata_used: u64,
-}
-
-#[derive(Debug, Clone)]
-pub struct BlockOutput {
-    pub header: Sealed<Header>,
-    pub tx_results: Vec<Result<TxOutput, InvalidTransaction>>,
-    // TODO: will be returned per tx later
-    pub storage_writes: Vec<StorageWrite>,
-    pub account_diffs: Vec<AccountDiff>,
-    pub published_preimages: Vec<(B256, Vec<u8>)>,
-    pub pubdata_used: u64,
-    pub computational_native_used: u64,
 }
 
 #[derive(Debug, Clone)]
