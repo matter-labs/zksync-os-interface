@@ -132,7 +132,7 @@ impl TxResultCallback for NoopTxCallback {
 pub trait AnyBlockContext {
     fn chain_id(&self) -> u64;
     fn block_number(&self) -> u64;
-    fn block_hashes(&self) -> BlockHashes;
+    fn block_hashes(&self) -> &[U256; 256];
     fn timestamp(&self) -> u64;
     fn eip1559_basefee(&self) -> U256;
     fn pubdata_price(&self) -> U256;
