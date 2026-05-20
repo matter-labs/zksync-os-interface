@@ -142,8 +142,6 @@ pub trait AnyBlockContext {
     fn pubdata_limit(&self) -> u64;
     /// Source of randomness, currently holds the value of prevRandao.
     fn mix_hash(&self) -> U256;
-    /// Version of the ZKsync OS and its config to be used for this block.
-    fn execution_version(&self) -> u32;
     fn blob_fee(&self) -> U256;
     /// Whether this block is executed on a Gateway chain.
     /// Gateway chains support additional features such as FRI proof verification.
