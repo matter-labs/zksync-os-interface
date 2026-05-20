@@ -131,6 +131,16 @@ pub enum InvalidTransaction {
     /// Unrecoverable means that tx cannot become valid in the future and should be dropped.
     OtherUnrecoverable(String),
     FilteredByValidator,
+    /// FRI proof tx is only allowed in Gateway mode.
+    FriProofTxNotSupported,
+    /// FRI sidecar data could not be resolved for a referenced statement hash.
+    FriProofSidecarMissing,
+    /// FRI proof failed verification.
+    FriProofVerificationFailed,
+    /// FRI proof verified, but did not bind to the referenced statement hash.
+    FriProofStatementHashMismatch,
+    /// FRI proof tx carries more than the allowed maximum statement hashes.
+    TooManyFriStatements,
 }
 
 /// Methods called during AA validation
