@@ -100,41 +100,6 @@ pub enum ExecutionResult {
     Revert(Vec<u8>),
 }
 
-/// Array of previous block hashes.
-/// Hash for block number N will be at index [256 - (current_block_number - N)]
-/// (most recent will be at the end) if N is one of the most recent
-/// 256 blocks.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct BlockHashes(pub [U256; 256]);
-
-impl Default for BlockHashes {
-    fn default() -> Self {
-        Self([U256::ZERO; 256])
-    }
-}
-
-impl serde::Serialize for BlockHashes {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        self.0.to_vec().serialize(serializer)
-    }
-}
-
-impl<'de> serde::Deserialize<'de> for BlockHashes {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let vec: Vec<U256> = Vec::deserialize(deserializer)?;
-        let array: [U256; 256] = vec
-            .try_into()
-            .map_err(|_| serde::de::Error::custom("Expected array of length 256"))?;
-        Ok(Self(array))
-    }
-}
-
 /// L2 to l1 log structure, used for merkle tree leaves.
 /// This structure holds both kinds of logs (user messages
 /// and l1 -> l2 tx logs).
