@@ -1,7 +1,7 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::{AnyTracer, AnyTxValidator};
-use crate::types::{BlockContext, TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::{Address, B256, hex};
+use crate::types::{BlockHashes, TxOutput, TxProcessingOutputOwned};
+use alloy_primitives::{Address, B256, hex, U256};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
@@ -129,6 +129,27 @@ impl TxResultCallback for NoopTxCallback {
     }
 }
 
+pub trait AnyBlockContext {
+    fn chain_id(&self) -> u64;
+    fn block_number(&self) -> u64;
+    fn block_hashes(&self) -> BlockHashes;
+    fn timestamp(&self) -> u64;
+    fn eip1559_basefee(&self) -> U256;
+    fn pubdata_price(&self) -> U256;
+    fn native_price(&self) -> U256;
+    fn coinbase(&self) -> Address;
+    fn gas_limit(&self) -> u64;
+    fn pubdata_limit(&self) -> u64;
+    /// Source of randomness, currently holds the value of prevRandao.
+    fn mix_hash(&self) -> U256;
+    /// Version of the ZKsync OS and its config to be used for this block.
+    fn execution_version(&self) -> u32;
+    fn blob_fee(&self) -> U256;
+    /// Whether this block is executed on a Gateway chain.
+    /// Gateway chains support additional features such as FRI proof verification.
+    fn is_gateway(&self) -> bool;
+}
+
 pub trait RunBlock {
     type Config;
     type Error: fmt::Display;
@@ -143,6 +164,7 @@ pub trait RunBlock {
         TrCallback: TxResultCallback,
         Tracer: AnyTracer,
         Valdiator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
     >(
         &self,
         config: Self::Config,
@@ -167,6 +189,7 @@ pub trait SimulateTx {
         PreimgSrc: PreimageSource,
         Tracer: AnyTracer,
         Validator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
     >(
         &self,
         config: Self::Config,
