@@ -1,7 +1,7 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::{AnyTracer, AnyTxValidator};
 use crate::types::{TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::{Address, B256, hex, U256};
+use alloy_primitives::{Address, B256, U256, hex};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
