@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.1...v0.1.2) (2026-05-21)
+
+
+### Features
+
+* add FRI-specific errors ([#70](https://github.com/matter-labs/zksync-os-interface/issues/70)) ([48d0275](https://github.com/matter-labs/zksync-os-interface/commit/48d02758ad42684abb9180588e4c14a46be63475))
+* interface changes for fri precompile ([#68](https://github.com/matter-labs/zksync-os-interface/issues/68)) ([71f9d8e](https://github.com/matter-labs/zksync-os-interface/commit/71f9d8edac658e8384c245cf63c3f03d6c5b2454))
+
 ## [0.1.1](https://github.com/matter-labs/zksync-os-interface/compare/v0.0.15...v0.1.1) (2026-04-20)
 
 
