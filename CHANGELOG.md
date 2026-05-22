@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.2...v0.1.3) (2026-05-22)
+
+
+### Features
+
+* untie traits from concrete structs ([#71](https://github.com/matter-labs/zksync-os-interface/issues/71)) ([8d99149](https://github.com/matter-labs/zksync-os-interface/commit/8d99149d8f2ce6b95210f668a4bc07d75a4b2dee))
+
 ## [0.1.2](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.1...v0.1.2) (2026-05-21)
 
 
