@@ -1,7 +1,4 @@
-use crate::error::InvalidTransaction;
-use alloy_consensus::{Header, Sealed};
 use alloy_primitives::{Address, B256, U256};
-use serde::{Deserialize, Serialize};
 
 // Re-export alloy's Log
 pub use alloy_primitives::Log;
@@ -16,18 +13,6 @@ pub struct TxProcessingOutputOwned {
     pub computational_native_used: u64,
     pub native_used: u64,
     pub pubdata_used: u64,
-}
-
-#[derive(Debug, Clone)]
-pub struct BlockOutput {
-    pub header: Sealed<Header>,
-    pub tx_results: Vec<Result<TxOutput, InvalidTransaction>>,
-    // TODO: will be returned per tx later
-    pub storage_writes: Vec<StorageWrite>,
-    pub account_diffs: Vec<AccountDiff>,
-    pub published_preimages: Vec<(B256, Vec<u8>)>,
-    pub pubdata_used: u64,
-    pub computational_native_used: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -113,67 +98,6 @@ pub enum ExecutionResult {
     Success(ExecutionOutput),
     /// Transaction reverted
     Revert(Vec<u8>),
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct BlockContext {
-    // Chain id is temporarily also added here (so that it can be easily passed from the oracle)
-    // long term, we have to decide whether we want to keep it here, or add a separate oracle
-    // type that would return some 'chain' specific metadata (as this class is supposed to hold block metadata only).
-    pub chain_id: u64,
-    pub block_number: u64,
-    pub block_hashes: BlockHashes,
-    pub timestamp: u64,
-    pub eip1559_basefee: U256,
-    pub pubdata_price: U256,
-    pub native_price: U256,
-    pub coinbase: Address,
-    pub gas_limit: u64,
-    pub pubdata_limit: u64,
-    /// Source of randomness, currently holds the value
-    /// of prevRandao.
-    pub mix_hash: U256,
-    /// Version of the ZKsync OS and its config to be used for this block.
-    pub execution_version: u32,
-    pub blob_fee: U256,
-    /// Whether this block is executed on a Gateway chain.
-    /// Gateway chains support additional features such as FRI proof verification.
-    pub is_gateway: bool,
-}
-
-/// Array of previous block hashes.
-/// Hash for block number N will be at index [256 - (current_block_number - N)]
-/// (most recent will be at the end) if N is one of the most recent
-/// 256 blocks.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct BlockHashes(pub [U256; 256]);
-
-impl Default for BlockHashes {
-    fn default() -> Self {
-        Self([U256::ZERO; 256])
-    }
-}
-
-impl serde::Serialize for BlockHashes {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        self.0.to_vec().serialize(serializer)
-    }
-}
-
-impl<'de> serde::Deserialize<'de> for BlockHashes {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let vec: Vec<U256> = Vec::deserialize(deserializer)?;
-        let array: [U256; 256] = vec
-            .try_into()
-            .map_err(|_| serde::de::Error::custom("Expected array of length 256"))?;
-        Ok(Self(array))
-    }
 }
 
 /// L2 to l1 log structure, used for merkle tree leaves.

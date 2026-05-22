@@ -1,7 +1,7 @@
 use crate::error::InvalidTransaction;
 use crate::tracing::{AnyTracer, AnyTxValidator};
-use crate::types::{BlockContext, BlockOutput, TxOutput, TxProcessingOutputOwned};
-use alloy_primitives::{Address, B256, hex};
+use crate::types::{TxOutput, TxProcessingOutputOwned};
+use alloy_primitives::{Address, B256, U256, hex};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fmt;
@@ -129,9 +129,29 @@ impl TxResultCallback for NoopTxCallback {
     }
 }
 
+pub trait AnyBlockContext {
+    fn chain_id(&self) -> u64;
+    fn block_number(&self) -> u64;
+    fn block_hashes(&self) -> &[U256; 256];
+    fn timestamp(&self) -> u64;
+    fn eip1559_basefee(&self) -> U256;
+    fn pubdata_price(&self) -> U256;
+    fn native_price(&self) -> U256;
+    fn coinbase(&self) -> Address;
+    fn gas_limit(&self) -> u64;
+    fn pubdata_limit(&self) -> u64;
+    /// Source of randomness, currently holds the value of prevRandao.
+    fn mix_hash(&self) -> U256;
+    fn blob_fee(&self) -> U256;
+    /// Whether this block is executed on a Gateway chain.
+    /// Gateway chains support additional features such as FRI proof verification.
+    fn is_gateway(&self) -> bool;
+}
+
 pub trait RunBlock {
     type Config;
     type Error: fmt::Display;
+    type BlockOutput;
 
     #[allow(clippy::too_many_arguments)]
     fn run_block<
@@ -142,6 +162,7 @@ pub trait RunBlock {
         TrCallback: TxResultCallback,
         Tracer: AnyTracer,
         Valdiator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
     >(
         &self,
         config: Self::Config,
@@ -153,8 +174,9 @@ pub trait RunBlock {
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
         validator: &mut Valdiator,
-    ) -> Result<BlockOutput, Self::Error>;
+    ) -> Result<Self::BlockOutput, Self::Error>;
 }
+
 pub trait SimulateTx {
     type Config;
     type Error: fmt::Display;
@@ -165,6 +187,7 @@ pub trait SimulateTx {
         PreimgSrc: PreimageSource,
         Tracer: AnyTracer,
         Validator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
     >(
         &self,
         config: Self::Config,
