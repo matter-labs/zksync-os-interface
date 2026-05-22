@@ -19,4 +19,4 @@ categories = ["cryptography"]
 alloy-primitives = { version = "1.6.0" }
 serde = { version = "1.0.228" }
 
-zksync_os_evm_errors = { version = "=0.1.2", path = "crates/evm-errors" }
+zksync_os_evm_errors = { version = "=0.1.3", path = "crates/evm-errors" }
