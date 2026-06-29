@@ -70,7 +70,11 @@ impl FriProofSidecarSource for NoFriProofSidecar {
 #[derive(Clone, Serialize, Deserialize)]
 pub enum EncodedTx {
     Abi(Vec<u8>),
-    Rlp(Vec<u8>, Address),
+    /// RLP-encoded tx with a sequencer-provided `from` hint and an optional
+    /// precomputed transaction hash (keccak256 of the encoding). The hash lets
+    /// the forward (sequencer) run read it from the oracle instead of hashing;
+    /// the proving run always recomputes it.
+    Rlp(Vec<u8>, Address, Option<B256>),
 }
 
 impl fmt::Debug for EncodedTx {
@@ -80,10 +84,11 @@ impl fmt::Debug for EncodedTx {
                 .debug_tuple("Abi")
                 .field(&format!("0x{}", hex::encode(bytes)))
                 .finish(),
-            Self::Rlp(bytes, addr) => f
+            Self::Rlp(bytes, addr, tx_hash) => f
                 .debug_tuple("Rlp")
                 .field(&format!("0x{}", hex::encode(bytes)))
                 .field(&format_args!("signer: {}", addr))
+                .field(&format_args!("tx_hash: {:?}", tx_hash))
                 .finish(),
         }
     }
@@ -93,13 +98,21 @@ impl EncodedTx {
     #[allow(clippy::len_without_is_empty)]
     pub fn len(&self) -> usize {
         match self {
-            Self::Abi(tx) | Self::Rlp(tx, _) => tx.len(),
+            Self::Abi(tx) | Self::Rlp(tx, _, _) => tx.len(),
         }
     }
 
     pub fn bytes(&self) -> &Vec<u8> {
         match self {
-            Self::Abi(tx) | Self::Rlp(tx, _) => tx,
+            Self::Abi(tx) | Self::Rlp(tx, _, _) => tx,
+        }
+    }
+
+    /// Sequencer-provided precomputed transaction hash, if any (RLP txs only).
+    pub fn tx_hash(&self) -> Option<B256> {
+        match self {
+            Self::Abi(_) => None,
+            Self::Rlp(_, _, tx_hash) => *tx_hash,
         }
     }
 }
