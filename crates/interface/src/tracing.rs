@@ -245,11 +245,26 @@ impl EvmTracer for NopTracer {
 
 pub type TxValidationResult = Result<(), InvalidTransaction>;
 
+/// The kind of transaction a [`TxValidator`] is consulted about.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ValidatedTxKind {
+    /// An L2 transaction. A rejection drops it from the block.
+    L2,
+    /// A priority (L1 -> L2) transaction. Only seen on chains with L1
+    /// transaction filtering enabled. A rejection does not drop it: it stays in
+    /// the block, its body is skipped (`begin_tx`) or rolled back
+    /// (`finish_tx`), its full gas limit is charged and its L1 result log
+    /// reports failure.
+    L1Priority,
+}
+
 /// Context passed to [`TxValidator::begin_tx`] before a transaction is executed.
 ///
 /// Carries the static transaction fields that a policy may inspect when deciding
-/// whether to admit a transaction.
+/// whether to admit a transaction. [`TxValidator::finish_tx`] gets no context; a
+/// policy that treats L1 and L2 transactions differently remembers `kind`.
 pub struct BeginTxContext<'a> {
+    pub kind: ValidatedTxKind,
     pub from: Address,
     pub to: Option<Address>,
     pub value: U256,
