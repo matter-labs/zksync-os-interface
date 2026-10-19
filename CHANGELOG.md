@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.3...v0.2.0) (2026-10-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* transaction kind in BeginTxContext and operator decision on tx outputs ([#77](https://github.com/matter-labs/zksync-os-interface/issues/77))
+
+### Features
+
+* transaction kind in BeginTxContext and operator decision on tx outputs ([#77](https://github.com/matter-labs/zksync-os-interface/issues/77)) ([7d607ee](https://github.com/matter-labs/zksync-os-interface/commit/7d607ee25e537332b54da2dc9f454600f3821152))
+
 ## [0.1.3](https://github.com/matter-labs/zksync-os-interface/compare/v0.1.2...v0.1.3) (2026-05-22)
 
 
