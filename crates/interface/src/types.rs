@@ -3,6 +3,24 @@ use alloy_primitives::{Address, B256, U256};
 // Re-export alloy's Log
 pub use alloy_primitives::Log;
 
+/// Where, if at all, the operator's [`TxValidator`](crate::tracing::TxValidator)
+/// rejected a priority (L1 -> L2) transaction on a chain with L1 transaction
+/// filtering enabled.
+///
+/// A rejected priority transaction is not dropped from the block (priority
+/// operations must be processed and proven); it is force-reverted with its full
+/// gas limit charged. The sequencer must hand the decisions of a block, in
+/// order, to witness generation so the proving run reverts at the same point.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum L1TxOperatorDecision {
+    /// Not rejected.
+    Accepted,
+    /// Rejected by `begin_tx`: the body was not executed.
+    RejectedBeforeExecution,
+    /// Rejected by `finish_tx`: the executed body was rolled back.
+    RejectedAfterExecution,
+}
+
 #[derive(Debug, Clone)]
 pub struct TxProcessingOutputOwned {
     pub status: bool,
@@ -13,6 +31,10 @@ pub struct TxProcessingOutputOwned {
     pub computational_native_used: u64,
     pub native_used: u64,
     pub pubdata_used: u64,
+    /// For priority (L1 -> L2) transactions: the operator's decision
+    /// (`Accepted` unless the chain filters L1 transactions). `None` for every
+    /// other transaction kind.
+    pub l1_tx_operator_decision: Option<L1TxOperatorDecision>,
 }
 
 #[derive(Debug, Clone)]
@@ -57,6 +79,10 @@ pub struct TxOutput {
     /// - `Some(address)` for the deployment transaction
     /// - `None` otherwise
     pub contract_address: Option<Address>,
+    /// For priority (L1 -> L2) transactions: the operator's decision
+    /// (`Accepted` unless the chain filters L1 transactions). `None` for every
+    /// other transaction kind.
+    pub l1_tx_operator_decision: Option<L1TxOperatorDecision>,
     /// Total logs list emitted during all the steps(validation, execution, postOp call)
     pub logs: Vec<Log>,
     /// Total l2 to l1 logs list emitted during all the steps(validation, execution, postOp call)
