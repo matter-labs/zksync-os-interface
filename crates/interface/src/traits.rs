@@ -83,6 +83,10 @@ pub trait L1WitnessSource: 'static {
     /// reads. A missing preimage rejects the transaction with
     /// [`InvalidTransaction::L1ReadWitnessMissing`],
     /// so an empty result means "not available".
+    ///
+    /// The OS keeps every preimage served during a block and may use it for any later read in that
+    /// block, so a source that records the block's witness must record every preimage it returns,
+    /// including those served to transactions that end up rejected.
     fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<Vec<u8>>;
 }
 
