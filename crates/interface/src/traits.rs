@@ -67,6 +67,35 @@ impl FriProofSidecarSource for NoFriProofSidecar {
     }
 }
 
+/// Source of the L1 read witness for the L1SLOAD precompile.
+///
+/// The precompile announces each read before verifying it: `address` and `keys` at the L1 block
+/// whose hash is `anchor`, i.e. an `eth_getProof` request at that block. The source returns the
+/// keccak256 preimages needed to verify it: the anchor's block header and the account and storage
+/// proof nodes, each with the hash it is served under. The precompile checks every preimage against
+/// its hash, so a source can make a block fail but can't make the OS accept wrong L1 state.
+///
+/// Sequencers fetch from L1 and record what they served; replays serve the recorded witness.
+pub trait L1WitnessSource: 'static {
+    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<(B256, Vec<u8>)>;
+}
+
+impl<T: L1WitnessSource> L1WitnessSource for Box<T> {
+    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<(B256, Vec<u8>)> {
+        self.deref_mut().fetch(anchor, address, keys)
+    }
+}
+
+/// Source with no L1 witness, for chains without L1SLOAD and paths that never read L1.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct NoL1Witness;
+
+impl L1WitnessSource for NoL1Witness {
+    fn fetch(&mut self, _anchor: B256, _address: Address, _keys: &[B256]) -> Vec<(B256, Vec<u8>)> {
+        Vec::new()
+    }
+}
+
 #[derive(Clone, Serialize, Deserialize)]
 pub enum EncodedTx {
     Abi(Vec<u8>),
@@ -175,6 +204,47 @@ pub trait RunBlock {
         tracer: &mut Tracer,
         validator: &mut Valdiator,
     ) -> Result<Self::BlockOutput, Self::Error>;
+
+    /// [`RunBlock::run_block`] with an [`L1WitnessSource`] for the L1SLOAD precompile.
+    ///
+    /// Versions without L1SLOAD keep this default, which ignores the source, so callers can pass a
+    /// source to every version.
+    #[allow(clippy::too_many_arguments)]
+    fn run_block_with_l1_witness<
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        TrSrc: TxSource,
+        FriSidecar: FriProofSidecarSource,
+        L1Witness: L1WitnessSource,
+        TrCallback: TxResultCallback,
+        Tracer: AnyTracer,
+        Valdiator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
+    >(
+        &self,
+        config: Self::Config,
+        block_context: BlockContext,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        tx_source: TrSrc,
+        fri_proof_sidecar: FriSidecar,
+        _l1_witness: L1Witness,
+        tx_result_callback: TrCallback,
+        tracer: &mut Tracer,
+        validator: &mut Valdiator,
+    ) -> Result<Self::BlockOutput, Self::Error> {
+        self.run_block(
+            config,
+            block_context,
+            storage,
+            preimage_source,
+            tx_source,
+            fri_proof_sidecar,
+            tx_result_callback,
+            tracer,
+            validator,
+        )
+    }
 }
 
 pub trait SimulateTx {
@@ -198,4 +268,37 @@ pub trait SimulateTx {
         tracer: &mut Tracer,
         validator: &mut Validator,
     ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error>;
+
+    /// [`SimulateTx::simulate_tx`] with an [`L1WitnessSource`] for the L1SLOAD precompile.
+    ///
+    /// Versions without L1SLOAD keep this default, which ignores the source.
+    #[allow(clippy::too_many_arguments)]
+    fn simulate_tx_with_l1_witness<
+        Storage: ReadStorage,
+        PreimgSrc: PreimageSource,
+        L1Witness: L1WitnessSource,
+        Tracer: AnyTracer,
+        Validator: AnyTxValidator,
+        BlockContext: AnyBlockContext,
+    >(
+        &self,
+        config: Self::Config,
+        transaction: EncodedTx,
+        block_context: BlockContext,
+        storage: Storage,
+        preimage_source: PreimgSrc,
+        _l1_witness: L1Witness,
+        tracer: &mut Tracer,
+        validator: &mut Validator,
+    ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error> {
+        self.simulate_tx(
+            config,
+            transaction,
+            block_context,
+            storage,
+            preimage_source,
+            tracer,
+            validator,
+        )
+    }
 }
