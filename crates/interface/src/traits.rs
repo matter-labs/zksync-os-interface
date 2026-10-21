@@ -69,21 +69,21 @@ impl FriProofSidecarSource for NoFriProofSidecar {
 
 /// Source of the L1 read witness for the L1SLOAD precompile.
 ///
-/// The precompile announces each read before verifying it: `address` and `keys` at the L1 block
-/// whose hash is `anchor`, i.e. an `eth_getProof` request at that block. The source returns the
-/// keccak256 preimages needed to verify it: the anchor's block header and the account and storage
-/// proof nodes, each with the hash it is served under. The precompile checks every preimage against
-/// its hash, so a source can make a block fail but can't make the OS accept wrong L1 state.
+/// The precompile announces each read before verifying it, and verifies everything it is served
+/// against the anchored L1 block hash. A source can make a read fail, but it can't make the OS
+/// accept wrong L1 state.
 ///
 /// Sequencers fetch from L1 and record what they served; replays serve the recorded witness.
 pub trait L1WitnessSource: 'static {
-    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<(B256, Vec<u8>)>;
-}
-
-impl<T: L1WitnessSource> L1WitnessSource for Box<T> {
-    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<(B256, Vec<u8>)> {
-        self.deref_mut().fetch(anchor, address, keys)
-    }
+    /// Returns the keccak256 preimages that prove `keys` of `address` at the L1 block whose hash is
+    /// `anchor`, i.e. an `eth_getProof` request at that block: the anchor's block header and the
+    /// account and storage proof nodes.
+    ///
+    /// Called synchronously during execution, once per announced read, with no deduplication across
+    /// reads. A missing preimage rejects the transaction with
+    /// [`InvalidTransaction::L1ReadWitnessMissing`],
+    /// so an empty result means "not available".
+    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<Vec<u8>>;
 }
 
 /// Source with no L1 witness, for chains without L1SLOAD and paths that never read L1.
@@ -91,7 +91,7 @@ impl<T: L1WitnessSource> L1WitnessSource for Box<T> {
 pub struct NoL1Witness;
 
 impl L1WitnessSource for NoL1Witness {
-    fn fetch(&mut self, _anchor: B256, _address: Address, _keys: &[B256]) -> Vec<(B256, Vec<u8>)> {
+    fn fetch(&mut self, _anchor: B256, _address: Address, _keys: &[B256]) -> Vec<Vec<u8>> {
         Vec::new()
     }
 }
@@ -207,8 +207,9 @@ pub trait RunBlock {
 
     /// [`RunBlock::run_block`] with an [`L1WitnessSource`] for the L1SLOAD precompile.
     ///
-    /// Versions without L1SLOAD keep this default, which ignores the source, so callers can pass a
-    /// source to every version.
+    /// The default ignores the source and runs [`RunBlock::run_block`], so callers can pass a source
+    /// to versions without L1SLOAD. Versions with L1SLOAD must override it, and an implementation that
+    /// doesn't override it must not implement `run_block` by calling it: the two would recurse.
     #[allow(clippy::too_many_arguments)]
     fn run_block_with_l1_witness<
         Storage: ReadStorage,
@@ -218,7 +219,7 @@ pub trait RunBlock {
         L1Witness: L1WitnessSource,
         TrCallback: TxResultCallback,
         Tracer: AnyTracer,
-        Valdiator: AnyTxValidator,
+        Validator: AnyTxValidator,
         BlockContext: AnyBlockContext,
     >(
         &self,
@@ -231,7 +232,7 @@ pub trait RunBlock {
         _l1_witness: L1Witness,
         tx_result_callback: TrCallback,
         tracer: &mut Tracer,
-        validator: &mut Valdiator,
+        validator: &mut Validator,
     ) -> Result<Self::BlockOutput, Self::Error> {
         self.run_block(
             config,
@@ -271,7 +272,9 @@ pub trait SimulateTx {
 
     /// [`SimulateTx::simulate_tx`] with an [`L1WitnessSource`] for the L1SLOAD precompile.
     ///
-    /// Versions without L1SLOAD keep this default, which ignores the source.
+    /// The same contract as [`RunBlock::run_block_with_l1_witness`]: the default ignores the source,
+    /// versions with L1SLOAD must override it, and `simulate_tx` must not call it unless it is
+    /// overridden.
     #[allow(clippy::too_many_arguments)]
     fn simulate_tx_with_l1_witness<
         Storage: ReadStorage,
