@@ -141,6 +141,9 @@ pub enum InvalidTransaction {
     FriProofStatementHashMismatch,
     /// FRI proof tx carries more than the allowed maximum statement hashes.
     TooManyFriStatements,
+    /// The L1 read witness for an L1SLOAD call could not be fetched. The tx may succeed in a later
+    /// block, once the witness is available.
+    L1WitnessMissing,
 }
 
 /// Methods called during AA validation
