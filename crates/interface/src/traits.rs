@@ -221,6 +221,9 @@ pub trait RunBlock {
     /// The default ignores the source and runs [`RunBlock::run_block`], so callers can pass a source
     /// to versions without L1SLOAD. Versions with L1SLOAD must override it, and an implementation that
     /// doesn't override it must not implement `run_block` by calling it: the two would recurse.
+    ///
+    /// Temporary, to keep 0.2.x compatible: 0.3.0 folds the source into `run_block` and drops this
+    /// method.
     #[allow(clippy::too_many_arguments)]
     fn run_block_with_l1_witness<
         Storage: ReadStorage,
@@ -285,7 +288,7 @@ pub trait SimulateTx {
     ///
     /// The same contract as [`RunBlock::run_block_with_l1_witness`]: the default ignores the source,
     /// versions with L1SLOAD must override it, and `simulate_tx` must not call it unless it is
-    /// overridden.
+    /// overridden. Temporary in the same way: 0.3.0 folds the source into `simulate_tx`.
     #[allow(clippy::too_many_arguments)]
     fn simulate_tx_with_l1_witness<
         Storage: ReadStorage,
