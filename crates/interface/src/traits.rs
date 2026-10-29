@@ -91,6 +91,12 @@ pub trait L1WitnessSource: 'static {
     fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<Vec<u8>>;
 }
 
+impl<T: L1WitnessSource> L1WitnessSource for Box<T> {
+    fn fetch(&mut self, anchor: B256, address: Address, keys: &[B256]) -> Vec<Vec<u8>> {
+        self.deref_mut().fetch(anchor, address, keys)
+    }
+}
+
 /// Source with no L1 witness, for chains without L1SLOAD and paths that never read L1.
 #[derive(Debug, Clone, Copy, Default)]
 pub struct NoL1Witness;
