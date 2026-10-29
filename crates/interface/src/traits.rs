@@ -81,8 +81,7 @@ pub trait L1WitnessSource: 'static {
     ///
     /// Called synchronously during execution, once per announced read, with no deduplication across
     /// reads. A missing preimage rejects the transaction with
-    /// [`InvalidTransaction::L1ReadWitnessMissing`],
-    /// so an empty result means "not available".
+    /// [`InvalidTransaction::L1WitnessMissing`], so an empty result means "not available".
     ///
     /// Within its size caps, the OS keeps every preimage served during a block and may use it for any
     /// later read in that block. Proof nodes are kept for the whole block, and a block header only
