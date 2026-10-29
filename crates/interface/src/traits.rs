@@ -228,7 +228,7 @@ pub trait RunBlock {
         TrSrc: TxSource,
         FriSidecar: FriProofSidecarSource,
         TrCallback: TxResultCallback,
-        L1Witness: L1WitnessSource,
+        L1WitnessSrc: L1WitnessSource,
         Tracer: AnyTracer,
         Validator: AnyTxValidator,
         BlockContext: AnyBlockContext,
@@ -241,7 +241,7 @@ pub trait RunBlock {
         tx_source: TrSrc,
         fri_proof_sidecar: FriSidecar,
         tx_result_callback: TrCallback,
-        _l1_witness: L1Witness,
+        _l1_witness: L1WitnessSrc,
         tracer: &mut Tracer,
         validator: &mut Validator,
     ) -> Result<Self::BlockOutput, Self::Error> {
@@ -290,7 +290,7 @@ pub trait SimulateTx {
     fn simulate_tx_with_l1_witness<
         Storage: ReadStorage,
         PreimgSrc: PreimageSource,
-        L1Witness: L1WitnessSource,
+        L1WitnessSrc: L1WitnessSource,
         Tracer: AnyTracer,
         Validator: AnyTxValidator,
         BlockContext: AnyBlockContext,
@@ -301,7 +301,7 @@ pub trait SimulateTx {
         block_context: BlockContext,
         storage: Storage,
         preimage_source: PreimgSrc,
-        _l1_witness: L1Witness,
+        _l1_witness: L1WitnessSrc,
         tracer: &mut Tracer,
         validator: &mut Validator,
     ) -> Result<Result<TxOutput, InvalidTransaction>, Self::Error> {
